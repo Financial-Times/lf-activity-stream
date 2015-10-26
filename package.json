@@ -1,0 +1,20 @@
+{
+  "name": "lf-activity-stream",
+  "version": "1.0.0",
+  "description": "Livefyre Activity Stream API",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ./src/*.js"
+  },
+  "author": "Dragos Digulescu <dragos.digulescu@iquestgroup.com>",
+  "license": "ISC",
+  "dependencies": {
+    "jwt-simple": "^0.3.1",
+    "livefyre": "^2.0.3",
+    "request": "^2.65.0"
+  },
+  "devDependencies": {
+    "babel": "^5.8.29",
+    "babel-eslint": "^4.1.3"
+  }
+}

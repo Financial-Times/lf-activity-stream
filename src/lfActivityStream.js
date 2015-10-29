@@ -2,6 +2,7 @@ import util from 'util';
 import jwt from 'jwt-simple';
 import request from 'request';
 import livefyre from 'livefyre';
+import _ from 'lodash';
 import config from './config';
 
 class lfActivityStreamClient {
@@ -15,6 +16,10 @@ class lfActivityStreamClient {
 		}
 
 		this.config = config;
+		this.options = {
+			type: 0,
+			interval: 10
+		};
 		this.authToken = null;
 		this.lfNetwork = lfNetwork;
 		this.lfNetworkSecret = lfNetworkSecret;
@@ -26,6 +31,10 @@ class lfActivityStreamClient {
 			this.config.protocol,
 			util.format(this.config.endpoint, this.network.getNetworkName())
 		].join('');
+	}
+	setOptions(opts) {
+		this.options = _.defaults(opts, this.options);
+		return this;
 	}
 	token(expires) {
 
@@ -58,23 +67,72 @@ class lfActivityStreamClient {
 			}
 		};
 	}
+	getAuthor(authorId, authors) {
+		if (authorId && authors.hasOwnProperty(authorId)) {
+			return {
+				displayName: authors[authorId].displayName,
+				tags: authors[authorId].tags,
+				type: authors[authorId].type
+			};
+		}
+		return null;
+	}
 	makeRequest(eventId, cb) {
 		if ( cb && typeof cb == 'function') {
 			return request(this.requestOptions(eventId), (error, response, body) => {
+
+				let nextEventId = null;
+
 				if (error || response.statusCode !== 200) {
-					return cb(error || body, response);
+					cb(error || body, response);
+				} else {
+
+					let res = JSON.parse(body);
+
+					if (res.hasOwnProperty('data') && res.data.hasOwnProperty('states')) {
+						let data = [];
+
+						if (res.hasOwnProperty('meta') && res.meta.hasOwnProperty('cursor')) {
+							nextEventId = res.meta.cursor.next;
+						}
+						_.map(res.data.states, item => {
+							if (item.type === this.options.type && item.event > eventId) {
+								let dataItem = {
+									collectionId: item.collectionId,
+									comment: {
+										parentId: item.content.parentId || null,
+										author: this.getAuthor(item.content.authorId, res.data.authors),
+										content: item.content.bodyHtml || null,
+										timestamp: item.content.createdAt || null,
+										commentId: item.content.id || null,
+										visibility: item.vis || null
+									}
+								};
+								data.push(dataItem);
+							}
+						});
+
+						if(data.length) {
+							cb(null, data, eventId);
+						}
+
+						if (nextEventId !== null) {
+							return this.makeRequest(nextEventId, cb);
+						}
+					}
 				}
-				return cb(null, response, body);
+				/**
+				 * if it got so far the call must be repeated because nextEventId is null
+				 * (either there was an error or meta.cursor.next is null)
+				 */
+				if ( nextEventId === null ) {
+					nextEventId = eventId;
+					setTimeout(() => {
+						this.makeRequest(nextEventId, cb);
+					}, this.options.interval * 1000);
+				}
 			});
 		}
-		return new Promise((resolve, reject) => {
-			request(this.requestOptions(eventId), (error, response, body) => {
-				if (error || response.statusCode !== 200) {
-					return reject({body: error || body, response});
-				}
-				return resolve({response, body});
-			});
-		});
 	}
 }
 

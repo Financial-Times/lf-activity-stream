@@ -1,5 +1,5 @@
 # lfActivityStream
-Livefyre Activity Stream api
+Livefyre Activity Stream API
 
 ### Usage
 
@@ -8,14 +8,15 @@ Livefyre Activity Stream api
 const lfActivityStream = require('lfActivityStream');
 
 let client = new lfActivityStream(network, key);
-let lastEventId = 1234;
+let eventId = 1234;
 
 client
-	.makeRequest(lastEventId)
-	.then((response) => {
-		console.log(response.body);
-	}, (error) => {
-		console.log(error.body);
+	.setOptions({
+		interval: 15
+	})
+	.makeRequest(eventId, (error, data, lastEventId) => {
+		console.log('[lastEventId]\n' + lastEventId);
+		console.log('[data]\n', data);
 	});
 	
 ```

@@ -6,8 +6,16 @@
   "scripts": {
     "lint": "eslint ./src/*.js"
   },
+  "repository": {
+	"type": "git",
+	"url": "git+https://github.com/Financial-Times/lf-activity-stream"
+  },
   "author": "Dragos Digulescu <dragos.digulescu@iquestgroup.com>",
-  "license": "ISC",
+  "license": "MIT",
+  "bugs": {
+	"url": "https://github.com/Financial-Times/lf-activity-stream/issues"
+  },
+  "homepage": "https://github.com/Financial-Times/lf-activity-stream",
   "dependencies": {
     "jwt-simple": "^0.3.1",
     "livefyre": "^2.0.3",

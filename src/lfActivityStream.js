@@ -1,9 +1,9 @@
-import util from 'util';
-import jwt from 'jwt-simple';
-import request from 'request';
-import livefyre from 'livefyre';
-import _ from 'lodash';
-import config from './config';
+const util = require('util');
+const jwt = require('jwt-simple');
+const request = require('request');
+const livefyre = require('livefyre');
+const _ = require('lodash');
+const config = require('./config');
 
 class lfActivityStreamClient {
 	constructor(lfNetwork, lfNetworkSecret) {
@@ -136,4 +136,4 @@ class lfActivityStreamClient {
 	}
 }
 
-export default lfActivityStreamClient;
+module.exports = lfActivityStreamClient;

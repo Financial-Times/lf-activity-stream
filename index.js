@@ -1,3 +1,3 @@
-import lfActivityStreamClient from './src/lfActivityStream.js';
+const lfActivityStream = require('./src/lfActivityStream.js');
 
-export default lfActivityStreamClient;
+module.exports = lfActivityStream;

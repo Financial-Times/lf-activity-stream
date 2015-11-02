@@ -38,10 +38,6 @@ class lfActivityStreamClient {
 	}
 	token(expires) {
 
-		if (this.authToken) {
-			return this.authToken;
-		}
-
 		if (!expires || new Date().getTime() >= expires) {
 			expires = new Date(new Date().getTime() + 60 * 60 * 1000).getTime();
 		}
@@ -77,6 +73,17 @@ class lfActivityStreamClient {
 		}
 		return null;
 	}
+	getArticle(collectionId, collections) {
+		if (collectionId && collections.hasOwnProperty(collectionId)) {
+			return {
+				url: collections[collectionId].url,
+				articleId: collections[collectionId].articleIdentifier,
+				siteId: collections[collectionId].site,
+				title: collections[collectionId].title
+			};
+		}
+		return null;
+	}
 	makeRequest(eventId, cb) {
 		if ( cb && typeof cb == 'function') {
 			return request(this.requestOptions(eventId), (error, response, body) => {
@@ -99,6 +106,7 @@ class lfActivityStreamClient {
 							if (item.type === this.options.type && item.event > eventId) {
 								let dataItem = {
 									collectionId: item.collectionId,
+									article: this.getArticle(item.collectionId, res.data.collections),
 									comment: {
 										parentId: item.content.parentId || null,
 										author: this.getAuthor(item.content.authorId, res.data.authors),

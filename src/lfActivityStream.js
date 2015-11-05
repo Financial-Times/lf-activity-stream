@@ -1,3 +1,4 @@
+'use strict';
 const util = require('util');
 const jwt = require('jwt-simple');
 const request = require('request');
@@ -111,7 +112,8 @@ class lfActivityStreamClient {
 										parentId: item.content.parentId || null,
 										author: this.getAuthor(item.content.authorId, res.data.authors),
 										content: item.content.bodyHtml || null,
-										timestamp: item.content.createdAt || null,
+										createdAt: item.content.createdAt || null,
+										updatedAt: item.content.updatedAt || null,
 										commentId: item.content.id || null,
 										visibility: item.vis || null
 									}

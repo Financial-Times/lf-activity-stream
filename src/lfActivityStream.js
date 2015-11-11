@@ -115,7 +115,7 @@ class lfActivityStreamClient {
 										createdAt: item.content.createdAt || null,
 										updatedAt: item.content.updatedAt || null,
 										commentId: item.content.id || null,
-										visibility: item.vis || null
+										visibility: item.vis
 									}
 								};
 								data.push(dataItem);

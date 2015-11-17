@@ -95,7 +95,11 @@ class lfActivityStreamClient {
 					cb(error || body, response);
 				} else {
 
-					let res = JSON.parse(body);
+					try {
+						var res = JSON.parse(body);
+					} catch (e) {
+						return cb(e)
+					}
 
 					if (res.hasOwnProperty('data') && res.data.hasOwnProperty('states')) {
 						let data = [];

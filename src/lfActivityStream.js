@@ -85,7 +85,7 @@ class lfActivityStreamClient {
 		}
 		return null;
 	}
-	makeRequest(eventId, cb) {
+	makeRequest(eventId, cb, once) {
 		if ( cb && typeof cb == 'function') {
 			return request(this.requestOptions(eventId), (error, response, body) => {
 
@@ -125,6 +125,10 @@ class lfActivityStreamClient {
 								data.push(dataItem);
 							}
 						});
+
+						if (once) {
+							return cb(null, response, body);
+						}
 
 						if(data.length) {
 							cb(null, data, eventId);

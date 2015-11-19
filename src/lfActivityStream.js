@@ -127,7 +127,7 @@ class lfActivityStreamClient {
 						});
 
 						if (once) {
-							return cb(null, response, body);
+							return cb(null, data, eventId);
 						}
 
 						if(data.length) {

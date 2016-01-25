@@ -10,7 +10,7 @@
 	"type": "git",
 	"url": "git+https://github.com/Financial-Times/lf-activity-stream"
   },
-  "author": "Dragos Digulescu <dragos.digulescu@iquestgroup.com>",
+  "author": "Dragos Digulescu <dragos.digulescu@ft.com>",
   "license": "MIT",
   "bugs": {
 	"url": "https://github.com/Financial-Times/lf-activity-stream/issues"

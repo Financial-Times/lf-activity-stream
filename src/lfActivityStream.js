@@ -69,7 +69,8 @@ class lfActivityStreamClient {
 			return {
 				displayName: authors[authorId].displayName,
 				tags: authors[authorId].tags,
-				type: authors[authorId].type
+				type: authors[authorId].type,
+				id: authors[authorId].id
 			};
 		}
 		return null;

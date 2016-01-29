@@ -99,7 +99,7 @@ class lfActivityStreamClient {
 					try {
 						var res = JSON.parse(body);
 					} catch (e) {
-						return cb(e)
+						var res = JSON.parse(body.replace(/\\U/g, '\\u'));
 					}
 
 					if (res.hasOwnProperty('data') && res.data.hasOwnProperty('states')) {

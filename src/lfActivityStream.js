@@ -95,11 +95,12 @@ class lfActivityStreamClient {
 				if (error || response.statusCode !== 200) {
 					cb(error || body, response);
 				} else {
-
+					var res;
 					try {
-						var res = JSON.parse(body);
+						res = JSON.parse(body);
 					} catch (e) {
-						return cb(e);
+						body = body.replace(/\\U/g, '\\\\u');
+						res = JSON.parse(body);
 					}
 
 					if (res.hasOwnProperty('data') && res.data.hasOwnProperty('states')) {

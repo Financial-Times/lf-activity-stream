@@ -1,5 +1,5 @@
 {
-  "protocol": "http://",
+  "protocol": "https://",
   "endpoint": "%s.bootstrap.fyre.co/api/v3.1/activity/",
   "authScope": "urn:livefyre:api:core=GetActivityStream"
 }

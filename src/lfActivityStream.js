@@ -88,8 +88,11 @@ class lfActivityStreamClient {
 	}
 	makeRequest(eventId, cb, once) {
 		if ( cb && typeof cb == 'function') {
-			return request(this.requestOptions(eventId), (error, response, body) => {
+			const requestOptions = this.requestOptions(eventId);
 
+			console.log(requestOptions.method || 'REQUEST', requestOptions.url);
+
+			return request(requestOptions, (error, response, body) => {
 				let nextEventId = null;
 
 				if (error || response.statusCode !== 200) {
